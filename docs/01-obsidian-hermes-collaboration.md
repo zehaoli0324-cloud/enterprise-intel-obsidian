@@ -38,7 +38,7 @@ Obsidian 的 vault（仓库）就是一个普通文件夹，里面全是 `.md` �
 |------|------|---------|
 | Hermes Agent | AI 代理（读写 vault、搜索、定时任务） | WSL2 Ubuntu（也支持 Linux/Mac/Windows 原生） |
 | Obsidian | 知识库前端（图谱、双链、查询） | Windows 桌面版（macOS/Linux 均可） |
-| Vault | 纯 markdown 文件夹 | Windows D 盘：`D:\Obsidian Vault`（WSL 视角 `/mnt/d/Obsidian Vault`） |
+| Vault | 纯 markdown 文件夹 | 任意路径，例如 Windows D 盘 `D:\MyVault`（WSL 视角 `/mnt/d/MyVault`） |
 | 可选：Feishu/Telegram gateway | 消息入口，聊天记录自动入 vault | 同 Hermes 所在机器 |
 
 关键点：
@@ -85,7 +85,7 @@ obsidian://graph?vault=VaultName&searchquery=关键词
 Windows 下通过 PowerShell 调用（注意 `&` 要用单引号包住，否则会被当成命令分隔符）：
 
 ```powershell
-powershell.exe -Command "Start-Process 'obsidian://open?vault=Obsidian%20Vault&file=总目录'"
+powershell.exe -Command "Start-Process 'obsidian://open?vault=MyVault&file=总目录'"
 ```
 
 ### 3.4 对话记录持久化（配合消息网关，可选）
@@ -102,7 +102,7 @@ Hermes 的 cron 可以定时执行任务：每天早上去抓指定网站、检�
 
 | 层 | 放什么 | 例子 |
 |----|--------|------|
-| Hermes memory | 少量长期事实：用户偏好、路径、环境 | "vault 在 /mnt/d/Obsidian Vault" |
+| Hermes memory | 少量长期事实：用户偏好、路径、环境 | "vault 在 /mnt/d/MyVault" |
 | Obsidian vault | 内容主体：文献、项目、对话、调研 | 论文笔记、实验记录、公司档案 |
 | Hermes skills | 可复用流程（怎么做事） | "如何把网页存成笔记" |
 
