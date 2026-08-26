@@ -27,6 +27,8 @@ python3 scripts/ask.py <vault路径> "富瀚微的客户是谁" -o 看板.html
 
 支持实体名或问题句式；输出自包含 HTML（基本信息表 + 关系网络 SVG + 关联卡片 + 来源），浏览器直接打开。关系边按类型着色：投资紫 / 供货蓝 / 竞争红 / 代工绿。
 
+**看板模板**：[templates/board.html](templates/board.html) —— 样式/布局与数据分离，改模板即可换皮肤（占位符：TITLE/NAME/TYPE_LABEL/FETCHED/NEIGHBOR_COUNT/HERO_COLOR/FM_ROWS/SVG/REL_CARDS/BODY_SNIP/SRC/DATE）。自定义模板用 `-t 路径` 指定；不指定时自动用脚本同级 `templates/board.html`，文件不存在则用内置兜底样式。
+
 ## 可运行 Demo
 
 [demo/](demo/) 是一个**已经跑通的 Obsidian 情报库案例**：以"上海富瀚微电子（300613）"和"珠海全志科技（300458）"为目标公司，完整演示：

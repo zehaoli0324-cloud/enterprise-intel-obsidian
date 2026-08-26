@@ -42,6 +42,69 @@ RELATION_KEYWORDS = {
     '关联': '#64748b', '生态': '#64748b', '合作': '#64748b',
 }
 
+# 内置兜底模板（templates/board.html 缺失时使用，结构与外部模板一致）
+TEMPLATE_FALLBACK = """<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif; background:#eef2f7; color:#1e293b; padding:24px; }
+  .wrap { max-width:960px; margin:0 auto; }
+  .hero { background:linear-gradient(135deg,{{HERO_COLOR}},#1e293b); color:#fff; border-radius:16px; padding:28px 32px; margin-bottom:20px; }
+  .hero h1 { font-size:26px; margin-bottom:6px; }
+  .hero .sub { opacity:.85; font-size:14px; }
+  .tag { display:inline-block; background:rgba(255,255,255,.2); border-radius:20px; padding:2px 12px; font-size:12px; margin-right:6px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:720px) { .grid { grid-template-columns:1fr; } }
+  .card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .card h2 { font-size:16px; margin-bottom:14px; padding-bottom:8px; border-bottom:2px solid #e2e8f0; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  td { padding:6px 8px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+  td.k { width:90px; color:#64748b; font-weight:600; }
+  .rel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .rel-card { display:block; text-decoration:none; color:inherit; border:1px solid #e2e8f0; border-left:4px solid var(--c,#94a3b8); border-radius:8px; padding:10px; transition:.15s; }
+  .rel-card:hover { box-shadow:0 2px 8px rgba(0,0,0,.12); transform:translateY(-1px); }
+  .rel-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+  .rel-desc { font-size:11px; color:#64748b; line-height:1.4; }
+  .rel-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }
+  .empty { color:#94a3b8; font-size:13px; }
+  .src { font-size:12px; color:#64748b; word-break:break-all; }
+  .body-snip { font-size:13px; line-height:1.7; color:#475569; background:#f8fafc; border-radius:8px; padding:12px; }
+  form.q { margin-bottom:20px; display:flex; gap:10px; }
+  form.q input { flex:1; padding:12px 16px; border-radius:10px; border:1px solid #cbd5e1; font-size:14px; }
+  form.q button { padding:12px 24px; background:#1e293b; color:#fff; border:none; border-radius:10px; cursor:pointer; font-size:14px; }
+  .foot { text-align:center; color:#94a3b8; font-size:12px; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <form class="q" method="get" action="">
+    <input id="q" name="q" value="" placeholder="换个实体再查：输入公司/人物/产品/投资人名…">
+    <button type="submit">查询</button>
+  </form>
+  <div class="hero">
+    <h1>{{NAME}}</h1>
+    <div class="sub">
+      <span class="tag">{{TYPE_LABEL}}</span>
+      <span class="tag">采集于 {{FETCHED}}</span>
+      <span class="tag">{{NEIGHBOR_COUNT}} 个直接关联</span>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card"><h2>基本信息</h2><table>{{FM_ROWS}}</table></div>
+    <div class="card"><h2>关系网络</h2>{{SVG}}</div>
+  </div>
+  <div class="card" style="margin-top:20px;"><h2>直接关联（{{NEIGHBOR_COUNT}}）</h2><div class="rel-grid">{{REL_CARDS}}</div></div>
+  <div class="card" style="margin-top:20px;"><h2>笔记内容摘要</h2><div class="body-snip">{{BODY_SNIP}}</div></div>
+  <div class="card" style="margin-top:20px;"><h2>来源</h2><div class="src">{{SRC}}</div></div>
+  <div class="foot">由 ask.py 生成 · {{DATE}}</div>
+</div>
+</body>
+</html>"""
+
 
 def parse_note(path):
     content = open(path, encoding='utf-8').read()
@@ -151,7 +214,7 @@ def build_svg(center, neighbors):
     return ''.join(svg)
 
 
-def render(target_base, note, notes):
+def render(target_base, note, notes, template_path=None):
     fm, body, links = note['fm'], note['body'], note['links']
     ntype = fm.get('type', 'index')
     name = fm.get('name', target_base)
@@ -211,83 +274,26 @@ def render(target_base, note, notes):
     src = fm.get('source_url', '')
     src_html = f'<a href="{html.escape(src)}" target="_blank">{html.escape(src[:80])}</a>' if src else '无来源记录'
 
-    page = f'''<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html.escape(name)} · 企业情报看板</title>
-<style>
-  * {{ margin:0; padding:0; box-sizing:border-box; }}
-  body {{ font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif; background:#eef2f7; color:#1e293b; padding:24px; }}
-  .wrap {{ max-width:960px; margin:0 auto; }}
-  .hero {{ background:linear-gradient(135deg,{color},#1e293b); color:#fff; border-radius:16px; padding:28px 32px; margin-bottom:20px; }}
-  .hero h1 {{ font-size:26px; margin-bottom:6px; }}
-  .hero .sub {{ opacity:.85; font-size:14px; }}
-  .tag {{ display:inline-block; background:rgba(255,255,255,.2); border-radius:20px; padding:2px 12px; font-size:12px; margin-right:6px; }}
-  .grid {{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }}
-  @media (max-width:720px) {{ .grid {{ grid-template-columns:1fr; }} }}
-  .card {{ background:#fff; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.08); }}
-  .card h2 {{ font-size:16px; margin-bottom:14px; padding-bottom:8px; border-bottom:2px solid #e2e8f0; }}
-  table {{ width:100%; border-collapse:collapse; font-size:13px; }}
-  td {{ padding:6px 8px; border-bottom:1px solid #f1f5f9; vertical-align:top; }}
-  td.k {{ width:90px; color:#64748b; font-weight:600; }}
-  .rel-grid {{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }}
-  .rel-card {{ display:block; text-decoration:none; color:inherit; border:1px solid #e2e8f0; border-left:4px solid var(--c,#94a3b8); border-radius:8px; padding:10px; transition:.15s; }}
-  .rel-card:hover {{ box-shadow:0 2px 8px rgba(0,0,0,.12); transform:translateY(-1px); }}
-  .rel-name {{ font-size:14px; font-weight:600; margin-bottom:2px; }}
-  .rel-desc {{ font-size:11px; color:#64748b; line-height:1.4; }}
-  .rel-dot {{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }}
-  .empty {{ color:#94a3b8; font-size:13px; }}
-  .src {{ font-size:12px; color:#64748b; word-break:break-all; }}
-  .body-snip {{ font-size:13px; line-height:1.7; color:#475569; background:#f8fafc; border-radius:8px; padding:12px; }}
-  form.q {{ margin-bottom:20px; display:flex; gap:10px; }}
-  form.q input {{ flex:1; padding:12px 16px; border-radius:10px; border:1px solid #cbd5e1; font-size:14px; }}
-  form.q button {{ padding:12px 24px; background:#1e293b; color:#fff; border:none; border-radius:10px; cursor:pointer; font-size:14px; }}
-  .foot {{ text-align:center; color:#94a3b8; font-size:12px; margin-top:24px; }}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <form class="q" method="get" action="">
-    <input id="q" name="q" value="" placeholder="换个实体再查：输入公司/人物/产品/投资人名…">
-    <button type="submit">查询</button>
-  </form>
-  <div class="hero">
-    <h1>{html.escape(name)}</h1>
-    <div class="sub">
-      <span class="tag">{type_label}</span>
-      <span class="tag">采集于 {fm.get('fetched_at', '-')}</span>
-      <span class="tag">{len(neighbors)} 个直接关联</span>
-    </div>
-  </div>
-  <div class="grid">
-    <div class="card">
-      <h2>基本信息</h2>
-      <table>{fm_rows}</table>
-    </div>
-    <div class="card">
-      <h2>关系网络</h2>
-      {build_svg(name[:8], [(n, c) for n, c, _ in neighbors])}
-    </div>
-  </div>
-  <div class="card" style="margin-top:20px;">
-    <h2>直接关联（{len(neighbors)}）</h2>
-    <div class="rel-grid">{rel_html}</div>
-  </div>
-  <div class="card" style="margin-top:20px;">
-    <h2>笔记内容摘要</h2>
-    <div class="body-snip">{body_snip}</div>
-  </div>
-  <div class="card" style="margin-top:20px;">
-    <h2>来源</h2>
-    <div class="src">{src_html}</div>
-  </div>
-  <div class="foot">由 ask.py 生成 · {datetime.date.today().isoformat()}</div>
-</div>
-</body>
-</html>'''
-    return page
+    values = {
+        'TITLE': html.escape(f'{name} · 企业情报看板'),
+        'NAME': html.escape(name),
+        'TYPE_LABEL': type_label,
+        'FETCHED': fm.get('fetched_at', '-'),
+        'NEIGHBOR_COUNT': str(len(neighbors)),
+        'HERO_COLOR': color,
+        'FM_ROWS': fm_rows,
+        'SVG': build_svg(name[:8], [(n, c) for n, c, _ in neighbors]),
+        'REL_CARDS': rel_html,
+        'BODY_SNIP': body_snip,
+        'SRC': src_html,
+        'DATE': datetime.date.today().isoformat(),
+    }
+    tpl = TEMPLATE_FALLBACK
+    if template_path and os.path.exists(template_path):
+        tpl = open(template_path, encoding='utf-8').read()
+    for k, v in values.items():
+        tpl = tpl.replace('{{' + k + '}}', v)
+    return tpl
 
 
 def main():
@@ -295,7 +301,17 @@ def main():
     ap.add_argument('vault', help='vault 路径')
     ap.add_argument('query', help='查询词（实体名或问题）')
     ap.add_argument('-o', '--output', default=None, help='输出 HTML 路径')
+    ap.add_argument('-t', '--template', default=None,
+                    help='看板模板路径（默认: 脚本同级 templates/board.html）')
     args = ap.parse_args()
+
+    # 默认模板位置：<script_dir>/../templates/board.html
+    template_path = args.template
+    if not template_path:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        candidate = os.path.join(script_dir, '..', 'templates', 'board.html')
+        if os.path.exists(candidate):
+            template_path = candidate
 
     if not os.path.isdir(args.vault):
         print(f'❌ vault 路径不存在: {args.vault}', file=sys.stderr)
@@ -315,7 +331,7 @@ def main():
         sys.exit(1)
 
     base, note = target
-    page = render(base, note, notes)
+    page = render(base, note, notes, template_path=template_path)
     out = args.output or f'看板-{base}.html'
     with open(out, 'w', encoding='utf-8') as f:
         f.write(page)
