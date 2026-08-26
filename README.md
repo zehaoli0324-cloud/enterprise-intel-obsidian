@@ -19,7 +19,7 @@
 | `scripts/ingest.py` | **写入端**：YAML 关系文件 → 批量生成 Obsidian 节点 + 双向 wikilink 关系 | `python3 scripts/ingest.py <vault> -f relations.yaml` |
 | `scripts/ask.py` | **读取端**：问询 → 生成 HTML 看板（关系图 + 关联卡片 + 来源） | `python3 scripts/ask.py <vault> "富瀚微的客户是谁" -o 看板.html` |
 | `templates/board.html` | 看板皮肤（样式与数据分离，改模板即换肤） | ask.py 自动读取，或用 `-t 自定义.html` |
-| `docs/` | 4 篇文档：协作环境 / 架构 / Obsidian 使用 / 搜索方法论 | 见下方索引 |
+| `docs/` | 5 篇文档：协作环境 / 架构 / Obsidian 使用 / 搜索方法论 / 导入方案 | 见下方索引 |
 | skill | `enterprise-intel-obsidian`（Hermes 全流程 + 坑） | 装入 Hermes 后自动触发 |
 
 ---
@@ -57,14 +57,16 @@ cd enterprise-intel-obsidian
 ## 目录结构
 
 ```
-├── docs/                  # 4 篇文档
+├── docs/                  # 5 篇文档
 │   ├── 01-obsidian-hermes-collaboration.md   # Obsidian × Hermes 协作方式与环境
 │   ├── 02-企业情报数据库-架构与Proposal.md   # 架构 + 实施提案
 │   ├── 03-obsidian-usage-guide.md            # Obsidian 使用方法（对照 demo 实战）
-│   └── 04-search-methods.md                  # 搜索方式与信息渠道（采集方法论）
+│   ├── 04-search-methods.md                  # 搜索方式与信息渠道（采集方法论）
+│   └── 05-import-guide.md                    # 导入方案（并入自己的 Obsidian 库）
 ├── scripts/
 │   ├── ask.py             # 问询 → HTML 看板
-│   └── ingest.py          # YAML → 节点 + 关系
+│   ├── ingest.py          # YAML → 节点 + 关系
+│   └── import-helper.py   # 情报库合并进现有 vault（冲突自动处理）
 ├── templates/
 │   └── board.html         # 看板模板（可自定义皮肤）
 ├── examples/
