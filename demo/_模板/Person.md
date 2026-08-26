@@ -7,8 +7,6 @@ company:
 linkedin:
 source_url:
 fetched_at: {{date:YYYY-MM-DD}}
-tags:
-  - type/person
 ---
 
 # {{title}}
