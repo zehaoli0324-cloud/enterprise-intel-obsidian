@@ -7,8 +7,8 @@
     python3 ask.py <vault_path> <查询词> [-o 输出.html]
 
 示例:
-    python3 ask.py /mnt/d/桌面/enterprise-intel-demo 富瀚微 -o 富瀚微看板.html
-    python3 ask.py /mnt/d/桌面/enterprise-intel-demo "富瀚微的客户是谁" -o out.html
+    python3 ask.py demo 富瀚微 -o 富瀚微看板.html
+    python3 ask.py <vault路径> "富瀚微的客户是谁" -o out.html
 
 说明:
 - 查询词支持实体名（公司/人物/产品/投资人）或问题句式（取第一个匹配的实体）
