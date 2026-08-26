@@ -24,6 +24,15 @@
 
 ---
 
+## 看效果（样本）
+
+HTML 看板实例（富瀚微，24 个关联实体）：
+
+- 样本 HTML：https://github.com/zehaoli0324-cloud/enterprise-intel-obsidian/blob/main/samples/看板样本-富瀚微.html
+- 样本 PNG：https://github.com/zehaoli0324-cloud/enterprise-intel-obsidian/blob/main/samples/看板样本-富瀚微.png
+
+---
+
 ## 快速上手（2 分钟）
 
 ### 方式 A：下载现成 Obsidian 库（推荐先看效果）
@@ -71,6 +80,9 @@ cd enterprise-intel-obsidian
 │   └── board.html         # 看板模板（可自定义皮肤）
 ├── examples/
 │   └── relations-demo.yaml  # ingest 输入示例
+├── samples/
+│   ├── 看板样本-富瀚微.html  # HTML 看板实例
+│   └── 看板样本-富瀚微.png   # 看板渲染 PNG 实例
 ├── demo/                  # 可运行的 Obsidian 情报库案例
 │   ├── 00-总目录.md
 │   ├── 01-公司/ 02-人物/ 03-产品物料/ 04-投资人/

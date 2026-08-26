@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!--
+  企业情报看板模板 (board.html)
+  ask.py 渲染时替换花括号占位符（如 TITLE / NAME）。
+  修改样式/布局 = 直接改这个文件，无需改脚本。
+  占位符清单（均带双花括号，此处省略）:
+    TITLE / NAME / TYPE_LABEL / FETCHED / NEIGHBOR_COUNT / HERO_COLOR
+    FM_ROWS / SVG / REL_CARDS / BODY_SNIP / SRC / DATE
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>上海富瀚微电子股份有限公司 · 企业情报看板</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif; background:#eef2f7; color:#1e293b; padding:24px; }
+  .wrap { max-width:960px; margin:0 auto; }
+  .hero { background:linear-gradient(135deg,#3b82f6,#1e293b); color:#fff; border-radius:16px; padding:28px 32px; margin-bottom:20px; }
+  .hero h1 { font-size:26px; margin-bottom:6px; }
+  .hero .sub { opacity:.85; font-size:14px; }
+  .tag { display:inline-block; background:rgba(255,255,255,.2); border-radius:20px; padding:2px 12px; font-size:12px; margin-right:6px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:720px) { .grid { grid-template-columns:1fr; } }
+  .card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .card h2 { font-size:16px; margin-bottom:14px; padding-bottom:8px; border-bottom:2px solid #e2e8f0; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  td { padding:6px 8px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+  td.k { width:90px; color:#64748b; font-weight:600; }
+  .rel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .rel-card { display:block; text-decoration:none; color:inherit; border:1px solid #e2e8f0; border-left:4px solid var(--c,#94a3b8); border-radius:8px; padding:10px; transition:.15s; }
+  .rel-card:hover { box-shadow:0 2px 8px rgba(0,0,0,.12); transform:translateY(-1px); }
+  .rel-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+  .rel-desc { font-size:11px; color:#64748b; line-height:1.4; }
+  .rel-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }
+  .empty { color:#94a3b8; font-size:13px; }
+  .src { font-size:12px; color:#64748b; word-break:break-all; }
+  .body-snip { font-size:13px; line-height:1.7; color:#475569; background:#f8fafc; border-radius:8px; padding:12px; }
+  form.q { margin-bottom:20px; display:flex; gap:10px; }
+  form.q input { flex:1; padding:12px 16px; border-radius:10px; border:1px solid #cbd5e1; font-size:14px; }
+  form.q button { padding:12px 24px; background:#1e293b; color:#fff; border:none; border-radius:10px; cursor:pointer; font-size:14px; }
+  .foot { text-align:center; color:#94a3b8; font-size:12px; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <form class="q" method="get" action="">
+    <input id="q" name="q" value="" placeholder="换个实体再查：输入公司/人物/产品/投资人名…">
+    <button type="submit">查询</button>
+  </form>
+  <div class="hero">
+    <h1>上海富瀚微电子股份有限公司</h1>
+    <div class="sub">
+      <span class="tag">公司</span>
+      <span class="tag">采集于 2026-08-26</span>
+      <span class="tag">24 个直接关联</span>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h2>基本信息</h2>
+      <table><tr><td class="k">名称</td><td>上海富瀚微电子股份有限公司</td></tr><tr><td class="k">代码</td><td>300613.SZ</td></tr><tr><td class="k">行业</td><td>集成电路设计（视觉/视频芯片）</td></tr><tr><td class="k">地区</td><td>上海</td></tr><tr><td class="k">成立</td><td>2004</td></tr><tr><td class="k">状态</td><td>上市（创业板）</td></tr><tr><td class="k">官网</td><td>https://www.fullhan.com</td></tr><tr><td class="k">采集时间</td><td>2026-08-26</td></tr></table>
+    </div>
+    <div class="card">
+      <h2>关系网络</h2>
+      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;background:#f8fafc;border-radius:12px;"><line x1="360" y1="210" x2="360" y2="60" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="360" cy="60" r="26" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="2"/><text x="360" y="64" text-anchor="middle" font-size="12" fill="#1e293b">2020-09-联想</text><line x1="360" y1="210" x2="417" y2="71" stroke="#10b981" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="417" cy="71" r="26" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="2"/><text x="417" y="75" text-anchor="middle" font-size="12" fill="#1e293b">IPC网络摄像机So</text><line x1="360" y1="210" x2="466" y2="104" stroke="#10b981" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="466" cy="104" r="26" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="2"/><text x="466" y="108" text-anchor="middle" font-size="12" fill="#1e293b">ISP图像处理芯片</text><line x1="360" y1="210" x2="499" y2="153" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="499" cy="153" r="26" fill="#8b5cf6" opacity="0.15" stroke="#8b5cf6" stroke-width="2"/><text x="499" y="157" text-anchor="middle" font-size="12" fill="#1e293b">上海朗瀚企业管理有限</text><line x1="360" y1="210" x2="510" y2="210" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="510" cy="210" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="510" y="214" text-anchor="middle" font-size="12" fill="#1e293b">中芯国际</text><line x1="360" y1="210" x2="499" y2="267" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="499" cy="267" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="499" y="271" text-anchor="middle" font-size="12" fill="#1e293b">全志科技</text><line x1="360" y1="210" x2="466" y2="316" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="466" cy="316" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="466" y="320" text-anchor="middle" font-size="12" fill="#1e293b">北京君正</text><line x1="360" y1="210" x2="417" y2="349" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="417" cy="349" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="417" y="353" text-anchor="middle" font-size="12" fill="#1e293b">华为海思</text><line x1="360" y1="210" x2="360" y2="360" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="360" cy="360" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="360" y="364" text-anchor="middle" font-size="12" fill="#1e293b">台积电</text><line x1="360" y1="210" x2="303" y2="349" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="303" cy="349" r="26" fill="#8b5cf6" opacity="0.15" stroke="#8b5cf6" stroke-width="2"/><text x="303" y="353" text-anchor="middle" font-size="12" fill="#1e293b">君联资本</text><line x1="360" y1="210" x2="254" y2="316" stroke="#64748b" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="254" cy="316" r="26" fill="#64748b" opacity="0.15" stroke="#64748b" stroke-width="2"/><text x="254" y="320" text-anchor="middle" font-size="12" fill="#1e293b">安防芯片产业链</text><line x1="360" y1="210" x2="221" y2="267" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="221" cy="267" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="221" y="271" text-anchor="middle" font-size="12" fill="#1e293b">星宸科技</text><line x1="360" y1="210" x2="210" y2="210" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="210" cy="210" r="26" fill="#f59e0b" opacity="0.15" stroke="#f59e0b" stroke-width="2"/><text x="210" y="214" text-anchor="middle" font-size="12" fill="#1e293b">杨小奇</text><line x1="360" y1="210" x2="221" y2="153" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="221" cy="153" r="26" fill="#8b5cf6" opacity="0.15" stroke="#8b5cf6" stroke-width="2"/><text x="221" y="157" text-anchor="middle" font-size="12" fill="#1e293b">杰智控股有限公司</text><line x1="360" y1="210" x2="254" y2="104" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="254" cy="104" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="254" y="108" text-anchor="middle" font-size="12" fill="#1e293b">海康威视</text><line x1="360" y1="210" x2="303" y2="71" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/><circle cx="303" cy="71" r="26" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="2"/><text x="303" y="75" text-anchor="middle" font-size="12" fill="#1e293b">瑞芯微</text><circle cx="360" cy="210" r="44" fill="#1e293b"/><text x="360" y="208" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">上海富瀚微电子股</text><text x="360" y="226" text-anchor="middle" font-size="10" fill="#cbd5e1">16 个关联</text></svg>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h2>直接关联（24）</h2>
+    <div class="rel-grid">
+        <a class="rel-card" href="#" style="--c:#ef4444" onclick="document.getElementById('q').value='2020-09-联想控股战略入股富瀚微';this.form.submit();">
+          <div class="rel-dot" style="background:#ef4444"></div>
+          <div class="rel-name">2020-09-联想控股战略入股富瀚微</div>
+          <div class="rel-desc">- 联想控股（投资方）· 富瀚微（标的）· 君联资本</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#10b981" onclick="document.getElementById('q').value='IPC网络摄像机SoC';this.form.submit();">
+          <div class="rel-dot" style="background:#10b981"></div>
+          <div class="rel-name">IPC网络摄像机SoC</div>
+          <div class="rel-desc">- 富瀚微 —— 全高清网络摄像机 SoC 芯片项目（1080p 起，向超高清演进）；H.265/HEVC 超高清视频编</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#10b981" onclick="document.getElementById('q').value='ISP图像处理芯片';this.form.submit();">
+          <div class="rel-dot" style="background:#10b981"></div>
+          <div class="rel-name">ISP图像处理芯片</div>
+          <div class="rel-desc">- 富瀚微 —— 2011 年进入智能视频 ISP 领域，国内先发者之一</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#8b5cf6" onclick="document.getElementById('q').value='上海朗瀚企业管理有限公司';this.form.submit();">
+          <div class="rel-dot" style="background:#8b5cf6"></div>
+          <div class="rel-name">上海朗瀚企业管理有限公司</div>
+          <div class="rel-desc">- 富瀚微（持股）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='中芯国际';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">中芯国际</div>
+          <div class="rel-desc">- 中芯国际、台积电、联电 —— 均为公司流片/代工供应商。来源：[网易财经](https://www.163.com/</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='全志科技';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">全志科技</div>
+          <div class="rel-desc">- 端侧 AI 视频芯片赛道与 全志科技、瑞芯微、星宸科技、华为海思竞逐。来源：[物联网世界 2025-07-25](h</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='北京君正';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">北京君正</div>
+          <div class="rel-desc">- 全志科技（竞争）· 富瀚微（竞争）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='华为海思';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">华为海思</div>
+          <div class="rel-desc">- 富瀚微 的竞争对手：安防芯片领域&quot;仅次于海思的第二梯队&quot;（海思供应受限后份额是争夺焦点）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='台积电';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">台积电</div>
+          <div class="rel-desc">- 中芯国际、台积电、联电 —— 均为公司流片/代工供应商。来源：[网易财经](https://www.163.com/</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#8b5cf6" onclick="document.getElementById('q').value='君联资本';this.form.submit();">
+          <div class="rel-dot" style="background:#8b5cf6"></div>
+          <div class="rel-name">君联资本</div>
+          <div class="rel-desc">- 君联资本 —— 2006 年起投资，最早且唯一的早期机构投资人</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#64748b" onclick="document.getElementById('q').value='安防芯片产业链';this.form.submit();">
+          <div class="rel-dot" style="background:#64748b"></div>
+          <div class="rel-name">安防芯片产业链</div>
+          <div class="rel-desc">- 全志科技（竞争）· 海康威视（客户）· 联想控股（股东）· 萤石网络（间接竞争：海康生态双入口）· 安防芯片产业链</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='星宸科技';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">星宸科技</div>
+          <div class="rel-desc">**安防 IPC SoC 芯片公司**（原晨星/联发科系团队），富瀚微 在安防视频芯片赛道的直接竞品。</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#f59e0b" onclick="document.getElementById('q').value='杨小奇';this.form.submit();">
+          <div class="rel-dot" style="background:#f59e0b"></div>
+          <div class="rel-name">杨小奇</div>
+          <div class="rel-desc">- 杨小奇 —— 实控人，持股 7.49%</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#8b5cf6" onclick="document.getElementById('q').value='杰智控股有限公司';this.form.submit();">
+          <div class="rel-dot" style="background:#8b5cf6"></div>
+          <div class="rel-name">杰智控股有限公司</div>
+          <div class="rel-desc">- 富瀚微（持股）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='海康威视';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">海康威视</div>
+          <div class="rel-desc">- 海康威视 —— **第一大客户，占营收 60%+（历史曾超 75%）**。来源：[和讯 2022-04](https</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='瑞芯微';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">瑞芯微</div>
+          <div class="rel-desc">- 端侧 AI 视频芯片赛道与 全志科技、瑞芯微、星宸科技、华为海思竞逐。来源：[物联网世界 2025-07-25](h</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#64748b" onclick="document.getElementById('q').value='端侧AI芯片竞争格局';this.form.submit();">
+          <div class="rel-dot" style="background:#64748b"></div>
+          <div class="rel-name">端侧AI芯片竞争格局</div>
+          <div class="rel-desc">FHW富瀚微</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#8b5cf6" onclick="document.getElementById('q').value='联想控股';this.form.submit();">
+          <div class="rel-dot" style="background:#8b5cf6"></div>
+          <div class="rel-name">联想控股</div>
+          <div class="rel-desc">- 联想控股 —— 旗下西藏东方企慧投资有限公司持股 **15.6%**（第一大股东）；2020-09 以约 9.89 </div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='联电';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">联电</div>
+          <div class="rel-desc">- 中芯国际、台积电、联电 —— 均为公司流片/代工供应商。来源：[网易财经](https://www.163.com/</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#3b82f6" onclick="document.getElementById('q').value='萤石网络';this.form.submit();">
+          <div class="rel-dot" style="background:#3b82f6"></div>
+          <div class="rel-name">萤石网络</div>
+          <div class="rel-desc">- 全志科技（竞争）· 海康威视（客户）· 联想控股（股东）· 萤石网络（间接竞争：海康生态双入口）· 安防芯片产业链</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#8b5cf6" onclick="document.getElementById('q').value='西藏东方企慧投资有限公司';this.form.submit();">
+          <div class="rel-dot" style="background:#8b5cf6"></div>
+          <div class="rel-name">西藏东方企慧投资有限公司</div>
+          <div class="rel-desc">- 富瀚微（持股）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#f59e0b" onclick="document.getElementById('q').value='陈春梅';this.form.submit();">
+          <div class="rel-dot" style="background:#f59e0b"></div>
+          <div class="rel-name">陈春梅</div>
+          <div class="rel-desc">- 陈春梅 —— 持股 13.19%（海康威视副董事长龚虹嘉之妻）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#f59e0b" onclick="document.getElementById('q').value='龚传军';this.form.submit();">
+          <div class="rel-dot" style="background:#f59e0b"></div>
+          <div class="rel-name">龚传军</div>
+          <div class="rel-desc">- 富瀚微（持股）</div>
+        </a>
+        <a class="rel-card" href="#" style="--c:#f59e0b" onclick="document.getElementById('q').value='龚虹嘉';this.form.submit();">
+          <div class="rel-dot" style="background:#f59e0b"></div>
+          <div class="rel-name">龚虹嘉</div>
+          <div class="rel-desc">- 陈春梅 —— 持股 13.19%（海康威视副董事长龚虹嘉之妻）</div>
+        </a></div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h2>笔记内容摘要</h2>
+    <div class="body-snip"># 富瀚微<br><br>**视觉芯片设计公司（fabless）**，专注视频监控/视觉处理芯片 20 余年。<br><br>## 业务<br><br>- 产品：图像处理芯片（ISP）、网络摄像机芯片（IPC SoC）、视频链路芯片、DVR/NVR 芯片、智能显示芯片、车载视频芯片（ISP/链路/录像机）<br>- 下游：智能安防、智能物联（消费视频）、车载（智能出行）<br>- 里程碑：2011 年进入智能视频 ISP 领域；2021 年率先研制 8K 分辨率、128 路 NVR 产品<br>- 资质：国家级专精特新&quot;小巨人&quot;、上海市制造业单项冠军<br><br>## 客户（供货给谁）<br><br>- 海康威视 —— **第一大客户，占营收 60%+（历史曾超 75%）**。来源：[和讯 2022-04](https://news.hexun.com/2022-04-15/205734433.html)（2021 营收 17 亿，60% 来自海康）、[搜狐](https://www.sohu.com/a/982036747_120022955)（曾超 75%）<br>- 其他安防设备厂商（公开报道未逐一披露）<br><br>## 供应商（上游）<br><br>- 中芯国际、台积电、联电 —— 均为公司流片/代工供应商。来源：[网易财经](https://www.163.com/dy/article/GC8423C70511RIVP.html)、[搜狐](https://www.sohu.com/a/460721817_166680)<br><br>## 股东与投资方<br><br>- 联想控股 —— 旗下西藏东方企慧投资有限公司持股 **15.6%**（第一大股东）；2020-09 以约 9.89 亿受让 9.9% 股份，与实控人杨小奇签一致行动协议。来源：[新浪财经 2020-09](http://finance.sina.com.cn/stock/relnews/cn/2020-09-04/doc-iivhuipp2406301.shtml)、东财十大股东数据<br>- 君联资本 —— 2006 年起投资，最早且唯一的早期机构投资人<br>- 陈春梅 —— 持股 13.19%（海康威视副董事长龚虹嘉之妻）<br>- 杨小奇 —— 实控人，持股 7.49%<br><br>## 竞争<br><br>- 端侧 AI 视频芯片赛道与 全志科技、瑞芯微、星宸科技、华为海思竞逐。来源：[物联网世界 2025-07-25](https://www.iotworld.com.cn/html/News/202507/08f134908e69d12a.shtml)<br>- 安防芯片领域地位：仅次于海思的第二梯队领军（来源：东财财富号分析）<br><br>## 财务<br><br>- 2021 营收 17 亿（海康占 60%）；2024 年营收约 18 亿量级。来源：[腾讯新闻 2025-12](https://news.qq.com/rain/a/20251217A02EF100)<br><br>## 待核实<br><br>- 用户提到&quot;富瀚微是联想的供应商&quot;：公开资料显示联想是股东（联想控股入股），**未见富瀚微向联想集团（PC 业务）供货的公开证据**；联想控股分析提及未来可能为联想 AI 硬件（如 AI 眼镜）供芯片，属预期非事实。待进一步核实。<br><br>## 关联<br><br>- 全志科技（竞争）· 海康威视（客户）· 联想控股（股东）· 萤石网络（间接竞争：海康生态双入口）· 安防芯片产业链</div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h2>来源</h2>
+    <div class="src"><a href="https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SZ300613" target="_blank">https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SZ3</a></div>
+  </div>
+  <div class="foot">由 ask.py 生成 · 2026-08-26</div>
+</div>
+</body>
+</html>
