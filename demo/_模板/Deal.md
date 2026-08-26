@@ -6,6 +6,8 @@ date:
 parties:
 source_url:
 fetched_at: {{date:YYYY-MM-DD}}
+tags:
+  - type/deal
 ---
 
 # {{title}}

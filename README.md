@@ -17,6 +17,15 @@
 | [docs/01-obsidian-hermes-collaboration.md](docs/01-obsidian-hermes-collaboration.md) | Obsidian × Hermes 协作方式与环境（部署学习指南） |
 | [docs/02-企业情报数据库-架构与Proposal.md](docs/02-企业情报数据库-架构与Proposal.md) | 企业情报库架构 + 实施提案 |
 | [docs/03-obsidian-usage-guide.md](docs/03-obsidian-usage-guide.md) | Obsidian 使用方法（对照 demo 实战） |
+| [docs/04-search-methods.md](docs/04-search-methods.md) | 搜索方式与信息渠道（采集方法论） |
+
+## 问询功能（HTML 看板）
+
+```bash
+python3 scripts/ask.py <vault路径> "富瀚微的客户是谁" -o 看板.html
+```
+
+支持实体名或问题句式；输出自包含 HTML（基本信息表 + 关系网络 SVG + 关联卡片 + 来源），浏览器直接打开。关系边按类型着色：投资紫 / 供货蓝 / 竞争红 / 代工绿。
 
 ## 可运行 Demo
 

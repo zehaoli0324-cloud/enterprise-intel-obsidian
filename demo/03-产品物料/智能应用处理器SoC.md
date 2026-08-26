@@ -4,6 +4,8 @@ name: 智能应用处理器 SoC
 category: 应用处理器
 company: "[[全志科技]]"
 fetched_at: 2026-08-26
+tags:
+  - type/product
 ---
 
 # 智能应用处理器SoC

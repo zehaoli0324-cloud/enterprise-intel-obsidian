@@ -4,6 +4,8 @@ name: ISP 图像处理芯片
 category: 视频芯片
 company: "[[富瀚微]]"
 fetched_at: 2026-08-26
+tags:
+  - type/product
 ---
 
 # ISP图像处理芯片

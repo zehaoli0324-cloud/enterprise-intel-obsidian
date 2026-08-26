@@ -6,6 +6,8 @@ spec:
 company:
 source_url:
 fetched_at: {{date:YYYY-MM-DD}}
+tags:
+  - type/product
 ---
 
 # {{title}}

@@ -4,6 +4,8 @@ name: IPC 网络摄像机 SoC 芯片
 category: 视频芯片
 company: "[[富瀚微]]"
 fetched_at: 2026-08-26
+tags:
+  - type/product
 ---
 
 # IPC网络摄像机SoC

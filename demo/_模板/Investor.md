@@ -7,6 +7,8 @@ focus:
 stage:
 source_url:
 fetched_at: {{date:YYYY-MM-DD}}
+tags:
+  - type/investor
 ---
 
 # {{title}}
