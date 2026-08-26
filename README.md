@@ -16,6 +16,17 @@
 |------|------|
 | [docs/01-obsidian-hermes-collaboration.md](docs/01-obsidian-hermes-collaboration.md) | Obsidian × Hermes 协作方式与环境（部署学习指南） |
 | [docs/02-企业情报数据库-架构与Proposal.md](docs/02-企业情报数据库-架构与Proposal.md) | 企业情报库架构 + 实施提案 |
+| [docs/03-obsidian-usage-guide.md](docs/03-obsidian-usage-guide.md) | Obsidian 使用方法（对照 demo 实战） |
+
+## 可运行 Demo
+
+[demo/](demo/) 是一个**已经跑通的 Obsidian 情报库案例**：以"上海富瀚微电子（300613）"和"珠海全志科技（300458）"为目标公司，完整演示：
+
+- 投资方：联想控股入股富瀚微（9.89 亿/9.9%，现持股 15.6%）、君联资本早期投资
+- 上下游：海康威视为富瀚微第一大客户（营收 60%+）；比亚迪为全志车载芯片第一大客户
+- 竞争关系：两家同在端侧 AI 视频芯片赛道竞逐（含 mermaid 竞争格局图）
+
+打开方式：Obsidian → 打开文件夹作为仓库 → 选择 `demo/` → 看「关系图谱」。
 
 ## 快速开始（3 步）
 
