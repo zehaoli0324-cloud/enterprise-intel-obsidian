@@ -29,6 +29,19 @@ python3 scripts/ask.py <vault路径> "富瀚微的客户是谁" -o 看板.html
 
 **看板模板**：[templates/board.html](templates/board.html) —— 样式/布局与数据分离，改模板即可换皮肤（占位符：TITLE/NAME/TYPE_LABEL/FETCHED/NEIGHBOR_COUNT/HERO_COLOR/FM_ROWS/SVG/REL_CARDS/BODY_SNIP/SRC/DATE）。自定义模板用 `-t 路径` 指定；不指定时自动用脚本同级 `templates/board.html`，文件不存在则用内置兜底样式。
 
+## 节点生成与关系连接（ingest.py）
+
+把结构化关系文件批量转成 Obsidian 节点 + 双向 wikilink（采集→入库的写入端）：
+
+```bash
+python3 scripts/ingest.py <vault> -f examples/relations-demo.yaml   # 示例见 examples/relations-demo.yaml
+python3 scripts/ingest.py <vault> -f relations.yaml --dry           # 预演
+```
+
+- 实体按 type 自动分目录（company→01-公司/…），frontmatter 的 type 与 tags 成对生成
+- 关系双向写 wikilink，反向词自动转换（供货↔采购、投资↔被投、持股↔被持股）
+- 幂等：已有节点不覆盖正文，只补缺失的关系行，可反复跑
+
 ## 可运行 Demo
 
 [demo/](demo/) 是一个**已经跑通的 Obsidian 情报库案例**：以"上海富瀚微电子（300613）"和"珠海全志科技（300458）"为目标公司，完整演示：
