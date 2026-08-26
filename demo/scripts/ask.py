@@ -144,17 +144,14 @@ def scan_vault(vault):
 
 
 def find_target(notes, query):
-    """实体匹配：完全匹配（文件名/frontmatter name）优先于子串匹配"""
     best, best_score = None, 0
     for base, note in notes.items():
         name = note['fm'].get('name', base)
         score = 0
-        if query == base or query == name:
-            score = 100          # 完全匹配，压倒性优先
-        elif query in base:
-            score = 10           # 文件名子串
+        if query in base:
+            score = 3
         elif query in name:
-            score = 10           # frontmatter name 子串
+            score = 3
         if query in note['body']:
             score += 1
         if score > best_score:
@@ -224,15 +221,13 @@ def render(target_base, note, notes, template_path=None):
     type_label = TYPE_LABELS.get(ntype, ntype)
     color = TYPE_COLORS.get(ntype, '#64748b')
 
-    # 一度关联（出去 + 进来），过滤索引/日志类非实体节点
+    # 一度关联（出去 + 进来）
     neighbors = []
     for t in sorted(links | note['backlinks']):
         if t not in notes or t == target_base:
             continue
         tn = notes[t]
         ttype = tn['fm'].get('type', '')
-        if ttype in ('index', 'changelog'):
-            continue
         tcolor = TYPE_COLORS.get(ttype, '#64748b')
         # 关系描述：本笔记指向它（本笔记正文）+ 它指向本笔记（对方正文）
         desc = extract_context(body, t)
@@ -240,7 +235,7 @@ def render(target_base, note, notes, template_path=None):
             desc = extract_context(tn['body'], target_base)
         d = desc[0] if desc else ttype
         neighbors.append((t, tcolor, d))
-    # 全部显示；SVG 图只画前 16 个（防图太密）
+    neighbors = neighbors[:16]
 
     # 基本信息表
     field_order = ['name', 'code', 'industry', 'region', 'founded', 'status', 'website',
@@ -287,7 +282,7 @@ def render(target_base, note, notes, template_path=None):
         'NEIGHBOR_COUNT': str(len(neighbors)),
         'HERO_COLOR': color,
         'FM_ROWS': fm_rows,
-        'SVG': build_svg(name[:8], [(n, c) for n, c, _ in neighbors[:16]]),
+        'SVG': build_svg(name[:8], [(n, c) for n, c, _ in neighbors]),
         'REL_CARDS': rel_html,
         'BODY_SNIP': body_snip,
         'SRC': src_html,
