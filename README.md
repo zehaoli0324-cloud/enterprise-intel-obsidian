@@ -1,10 +1,15 @@
-# Enterprise Intel
+# GroundSignal
 
 ### Evidence-Grounded Continuous Enterprise Intelligence
 
+> **From public signals to decision intelligence.**
+
 **把分散的公开信息变成可追溯、可比较、可持续更新的企业与供应链情报。**
 
-Enterprise Intel 不是一个"搜索公司信息"的 Agent，也不是一个静态知识图谱。它尝试建立一条完整的企业情报链路：
+> 软件是生产机器，数据是资产，**Intelligence 才是商品**。
+> 商业路径：Service first → Subscription second → Data/API third。
+
+GroundSignal 不是一个"搜索公司信息"的 Agent，也不是一个静态知识图谱。它尝试建立一条完整的企业情报链路：
 
 ```text
 公开信息

@@ -1,4 +1,4 @@
-# 导入方案：把 Enterprise Intel DB 导入你自己的 Obsidian 库
+# 导入方案：把 GroundSignal 导入你自己的 Obsidian 库
 
 > 版本：v1.0 · 2026-08-26
 > 适用：拿到本仓库/zip 后，想把它并进自己已有 Obsidian 库的人。
@@ -15,7 +15,7 @@
 
 ## 方案 A：作为独立库打开（最快，2 分钟）
 
-1. 下载 zip：https://github.com/zehaoli0324-cloud/enterprise-intel-obsidian/releases/download/v0.1.0/enterprise-intel-demo-vault.zip
+1. 下载 zip：https://github.com/zehaoli0324-cloud/groundsignal/releases/download/v0.1.0/enterprise-intel-demo-vault.zip
 2. 解压 → 得到 `enterprise-intel-demo/` 文件夹
 3. Obsidian 桌面版 → 左下角仓库名 →「打开其他仓库」→「打开文件夹作为仓库」→ 选择该文件夹
 4. 右侧打开「关系图谱」即可看到供应链/投资/竞争网络
