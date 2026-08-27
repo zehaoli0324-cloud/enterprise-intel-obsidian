@@ -4,7 +4,9 @@ name: DRAM存储器
 category: 动态随机存取存储器（DDR4/DDR5/LPDDR）
 tags:
   - type/product
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH603986
 fetched_at: 2026-08-26
+evidence: VERIFIED
 ---
 
 # DRAM存储器

@@ -3,7 +3,9 @@ type: investor
 name: InfoGrid Limited
 tags:
   - type/investor
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/ShareholderResearch/PageAjax?code=SH603986
 fetched_at: 2026-08-26
+evidence: VERIFIED
 ---
 
 # InfoGrid Limited

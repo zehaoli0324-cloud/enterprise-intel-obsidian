@@ -97,7 +97,7 @@ def build_new_note(entity):
     for k in ('code', 'industry', 'region', 'founded', 'status', 'website',
               'investor_type', 'amount', 'date', 'role', 'company',
               'products', 'suppliers', 'customers', 'investors',
-              'competitors', 'source_url', 'fetched_at'):
+              'competitors', 'source_url', 'fetched_at', 'evidence'):
         if entity.get(k):
             fm[k] = entity[k]
     body = [f'# {name}', '']

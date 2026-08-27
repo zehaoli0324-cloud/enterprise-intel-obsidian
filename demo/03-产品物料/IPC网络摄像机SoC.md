@@ -3,9 +3,11 @@ type: product
 name: IPC 网络摄像机 SoC 芯片
 category: 视频芯片
 company: "[[富瀚微]]"
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SZ300613
 fetched_at: 2026-08-26
 tags:
   - type/product
+evidence: VERIFIED
 ---
 
 # IPC网络摄像机SoC

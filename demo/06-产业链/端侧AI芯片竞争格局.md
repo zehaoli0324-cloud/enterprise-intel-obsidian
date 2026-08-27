@@ -4,6 +4,7 @@ tags:
   - 竞争格局
   - 端侧AI
 fetched_at: 2026-08-26
+evidence: SUPPORTED
 ---
 
 # 端侧AI芯片竞争格局

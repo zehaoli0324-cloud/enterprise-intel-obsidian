@@ -3,7 +3,9 @@ type: investor
 name: Amlogic(HK)
 tags:
   - type/investor
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/ShareholderResearch/PageAjax?code=SH688099
 fetched_at: 2026-08-26
+evidence: VERIFIED
 ---
 
 # Amlogic(HK)

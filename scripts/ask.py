@@ -34,6 +34,18 @@ TYPE_COLORS = {
     'investor': '#8b5cf6', 'deal': '#ef4444', 'analysis': '#64748b',
     'changelog': '#94a3b8', 'index': '#0ea5e9',
 }
+EVIDENCE_STYLE = {
+    'VERIFIED': ('一手官方', '#10b981'),
+    'SUPPORTED': ('权威媒体', '#3b82f6'),
+    'INFERRED': ('自媒体', '#f59e0b'),
+    'UNKNOWN': ('待核实', '#ef4444'),
+    'NA': ('非实体', '#94a3b8'),
+}
+
+
+def evidence_badge_html(level):
+    label, color = EVIDENCE_STYLE.get(level, ('未知', '#94a3b8'))
+    return f'<span class="tag" style="background:{color}">证据:{label}</span>'
 RELATION_KEYWORDS = {
     '投资': '#8b5cf6', '股东': '#8b5cf6', '持股': '#8b5cf6',
     '供货': '#3b82f6', '客户': '#3b82f6', '采购': '#3b82f6', '供应': '#3b82f6',
@@ -89,6 +101,7 @@ TEMPLATE_FALLBACK = """<!DOCTYPE html>
     <h1>{{NAME}}</h1>
     <div class="sub">
       <span class="tag">{{TYPE_LABEL}}</span>
+      {{EVIDENCE}}
       <span class="tag">采集于 {{FETCHED}}</span>
       <span class="tag">{{NEIGHBOR_COUNT}} 个直接关联</span>
     </div>
@@ -283,6 +296,7 @@ def render(target_base, note, notes, template_path=None):
         'TITLE': html.escape(f'{name} · 企业情报看板'),
         'NAME': html.escape(name),
         'TYPE_LABEL': type_label,
+        'EVIDENCE': evidence_badge_html(fm.get('evidence', '')),
         'FETCHED': fm.get('fetched_at', '-'),
         'NEIGHBOR_COUNT': str(len(neighbors)),
         'HERO_COLOR': color,

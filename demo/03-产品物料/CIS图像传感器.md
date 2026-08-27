@@ -4,7 +4,9 @@ name: CIS图像传感器
 category: CMOS 图像传感器
 tags:
   - type/product
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH603501
 fetched_at: 2026-08-26
+evidence: VERIFIED
 ---
 
 # CIS图像传感器

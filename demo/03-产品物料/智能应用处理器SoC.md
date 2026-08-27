@@ -3,9 +3,11 @@ type: product
 name: 智能应用处理器 SoC
 category: 应用处理器
 company: "[[全志科技]]"
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH603893
 fetched_at: 2026-08-26
 tags:
   - type/product
+evidence: VERIFIED
 ---
 
 # 智能应用处理器SoC

@@ -3,7 +3,9 @@ type: investor
 name: 联和国际有限公司(Sino-Alliance International,Ltd.)
 tags:
   - type/investor
+source_url: https://emweb.securities.eastmoney.com/PC_HSF10/ShareholderResearch/PageAjax?code=SH688347
 fetched_at: 2026-08-26
+evidence: VERIFIED
 ---
 
 # 联和国际有限公司(Sino-Alliance International,Ltd.)
