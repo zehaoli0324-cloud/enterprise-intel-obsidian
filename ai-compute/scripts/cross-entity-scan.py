@@ -112,7 +112,7 @@ def classify(new_base, old_base, shared, new_note, old_note, notes, direct):
         types.append('DIRECT_COMPETITOR（关系行标注）')
     elif direct:
         types.append('SUPPLY_CHAIN_LINK（已有关联）')
-    if shared_products and same_ind and 'DIRECT_COMPETITOR' not in types:
+    if shared_products and same_ind and not any('DIRECT_COMPETITOR' in t for t in types):
         types.append('DIRECT_COMPETITOR')
     elif shared_products:
         types.append('PRODUCT_OVERLAP')
@@ -138,7 +138,7 @@ def classify(new_base, old_base, shared, new_note, old_note, notes, direct):
         'direct': 1.0 if direct else 0.0,
     }
     score = sum(SCORE_W[k] * v for k, v in comp.items())
-    if direct and 'DIRECT_COMPETITOR' in types:
+    if direct and any('DIRECT_COMPETITOR' in t for t in types):
         score = max(score, 0.75)
     return types, score, shared_products, shared_customers, shared_suppliers, shared_investors
 
@@ -175,7 +175,7 @@ def main():
         results.append({
             'old': old_base, 'type': old_note['fm'].get('type', '?'),
             'shared': sorted(shared), 'types': types, 'score': round(score, 2),
-            'direct': direct, 'sp': sp, 'sc': sc, 'ss': si, 'si': si,
+            'direct': direct, 'sp': sp, 'sc': sc, 'ss': ss, 'si': si,
         })
 
     results.sort(key=lambda r: -r['score'])

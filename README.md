@@ -1,86 +1,286 @@
-# Enterprise Intel DB · 企业情报数据库
+# Enterprise Intel
 
-**Agent 自动构建、证据可追溯、持续更新的深科技供应链情报系统。**
+### Evidence-Grounded Continuous Enterprise Intelligence
 
-回答四个问题：
+**把分散的公开信息变成可追溯、可比较、可持续更新的企业与供应链情报。**
 
-> 谁供货？供什么货？谁投钱？——以及：这件事什么时候变？
+Enterprise Intel 不是一个"搜索公司信息"的 Agent，也不是一个静态知识图谱。它尝试建立一条完整的企业情报链路：
 
-## 为什么有价值（不是又一个"AI 搜公司"）
-
-| 普通爬虫/搜索 | 本系统 |
-|--------------|--------|
-| "富瀚微是海康的供应商" | 该关系**带来源 URL、置信度等级（一手官方/权威媒体/自媒体）、信息年份** |
-| 公司→公司 一层图 | **公司→产品→组件→工厂** 产品级穿透（NVIDIA H200 → HBM3E → SK海力士 → CoWoS → 台积电） |
-| 静态快照 | **事件流 + 产能追踪**（谁扩产、谁售罄、何时变化） |
-| 无法验证对错 | **Eval 报告**：50 条 gold set 核对，Relation Precision 100%，短板清单追踪 |
-| 锁死在数据库/UI | 纯 markdown+YAML，Obsidian 看图，机器层可导出，不锁死任何软件 |
-
-核心是 **claim-evidence-event** 模型：每条关系不是"AI 找到的"，而是"有证据链支撑、有时间戳、可复核的"。
-
-## 数据流水线
-
+```text
+公开信息
+→ Evidence
+→ Claim / Relation / Event
+→ Temporal Intelligence Graph
+→ Cross-Entity Analysis
+→ Change Detection
+→ Decision-oriented Output
+→ Evaluation
 ```
-公开数据（东财 API/公告/年报/新闻）
-        ↓ 搜索系统（多源验证 + 来源分级）
-  结构化抽取（实体/关系/产品/事件）
-        ↓ 关系串联系统（ingest.py 幂等入库）
-  Obsidian 情报库（实体图 + 证据 + 时间）
+
+目标不是回答"NVIDIA 的供应商有哪些？"，而是继续回答：
+
+> 这条供应关系由什么证据支持？它是什么时候成立的？现在还成立吗？
+> 新加入一家寒武纪后，它和已有 NVIDIA / 华为 / 海光信息有什么竞争或供应链交集？
+> 一个 HBM、CoWoS 或客户变化出现后，哪些已有判断可能需要更新？
+> 系统漏掉了多少重要事件？发现得够不够快？误报多不多？
+
+---
+
+## Why this exists
+
+企业情报真正困难的部分通常不是"找到一篇新闻"，而是把长期分散的信息连接起来。
+
+```text
+NVIDIA → makes → H200 → uses → HBM3E → supplied by → SK hynix → packaging dependency → CoWoS → manufactured by → TSMC
+```
+
+某一天出现"TSMC expands CoWoS capacity"，真正有价值的问题不是"台积电扩产了"，而是：
+
+> 这是否影响 NVIDIA GPU 的供给约束？哪些 HBM、服务器 ODM、PCB 或光模块公司与这个变化有关？哪些已有 watchlist 公司应该被重新检查？
+
+**核心思想：新信息不是被存入数据库，而是被放进已有知识网络中重新解释。**
+
+---
+
+## System Logic
+
+```text
+1. Research Target (Company/Product/Industry/Watchlist)
         ↓
-  ask.py 单实体看板 ｜ panorama 全景图 ｜ watchlist 事件流 ｜ evidence-audit 审计
+2. Multi-source Retrieval (API/filings/annual reports/websites/media/search)
+        ↓
+3. Evidence Extraction (source URL · publication time · retrieved_at · source tier)
+        ↓
+4. Structured Intelligence (Entity·Product·Facility·Relation·Claim·Evidence·Event)
+        ↓
+5. Intelligence Graph (company ↔ product ↔ supplier ↔ facility, investor ↔ company, event ↔ affected)
+        ↓
+   Cross-Entity Scan              Change Detection
+   (overlap/competition/          (event stream/capacity/
+    shared customer/supplier)      product & supplier changes)
+        ↓
+6. Intelligence Output (Company Card · Panorama · Discovery Report · Watchlist · Evidence Audit)
+        ↓
+7. Evaluation (Precision · Recall · Evidence Coverage · Detection Latency · False Alert Rate)
 ```
 
-## 快速上手（2 分钟）
+---
 
-**方式 A：看效果**
-下载 release zip → Obsidian 打开 → 图谱视图：https://github.com/zehaoli0324-cloud/enterprise-intel-obsidian/releases/tag/v0.1.0
+## What happens when a new company enters the system?
 
-**方式 B：问它**
+这是系统目前最重要的一条运行逻辑。加入"寒武纪"，系统不会只创建 `寒武纪.md`，而是执行一次 **Cross-Entity Intelligence Scan**：
+
+```text
+寒武纪 → 读取产品/客户/供应商/投资人/行业/已知关系
+      → 与已有实体逐一比较 → neighbors(new) ∩ neighbors(existing)
+      → 识别共享节点和直接关系 → 分类
+```
+
+当前 prototype 支持发现：`DIRECT_COMPETITOR / PRODUCT_OVERLAP / SHARED_CUSTOMER / SHARED_SUPPLIER / SHARED_INVESTOR / SUPPLY_CHAIN_LINK / COMMON_ECOSYSTEM`
+
+发现分成三层，避免把"有共同客户"直接写成"一定是竞争对手"：
+
+```text
+OBSERVED    已有直接关系或证据支持的事实
+DERIVED     由共享客户/产品/供应链结构计算出的分析
+HYPOTHESIS  只有行业或生态重叠，需要进一步检索验证
+```
+
 ```bash
-python3 scripts/ask.py demo "富瀚微的客户是谁" -o 看板.html   # 单实体情报卡
-python3 scripts/ask.py demo "联想控股投资了谁" -o 看板.html
-python3 scripts/panorama.py demo 富瀚微 全志科技 -o 全景.html  # 两家公司全景
-python3 scripts/watchlist.py ai-compute --watch NVIDIA,SK海力士 -o watchlist.html  # 事件流
+python3 scripts/cross-entity-scan.py ai-compute 寒武纪 --report
+# → 08-智能发现/2026-08-27-寒武纪-交叉关系发现.md
 ```
 
-**方式 C：建自己的库**
+---
+
+## From search to evidence
+
+| Tier | Source | Typical use |
+|------|--------|-------------|
+| Tier 1 | 交易所公告、年报、招股书、政府文件、采购/招投标公告 | 事实验证 |
+| Tier 2 | 公司官网、Reuters/Bloomberg/Nikkei/主流财经与专业行业媒体 | 强支持证据 |
+| Tier 3 | 搜索结果、公众号、雪球、财富号、论坛、行业讨论 | 线索发现 |
+
+实际使用/设计支持的数据来源：东方财富行情/F10 API、巨潮/上交所/深交所公告、公司年报与公告、公司官网、互动易/e互动、招投标公告（Structured/first-party）；主流财经媒体、半导体行业媒体、360/搜狗搜索、行业分析（Discovery）；雪球、财富号、公众号、论坛（Lead-only）。
+
+核心原则：**一手优先、多源交叉、事实与预期分离、量化数字必须溯源、弱来源只作为 lead。**
+
+系统保存的不只是"富瀚微 → 海康威视"，而是 claim + evidence：
+
+```yaml
+claim:
+  subject: 富瀚微
+  predicate: SUPPLIES
+  object: 海康威视
+  status: SUPPORTED
+  valid_from: 2023
+  last_verified_at: 2026-08-25
+evidence:
+  source_type: annual_report
+  source_url: ...
+  publication_date: ...
+  retrieved_at: ...
+```
+
+---
+
+## Data Model
+
+V2 intelligence model 七类核心对象：ENTITY / PRODUCT / FACILITY / RELATION / CLAIM / EVIDENCE / EVENT
+
+- **ENTITY**：谁？（NVIDIA / TSMC / SK hynix / 寒武纪）
+- **PRODUCT**：具体什么产品？（H100 / H200 / B200 / HBM3E / 昇腾 910C）
+- **FACILITY**：哪个制造/产能节点？（Fab / CoWoS 封装厂 / HBM 产线 / 服务器工厂）
+- **RELATION**：两个对象理论上什么关系？（SUPPLIES / CUSTOMER_OF / MANUFACTURED_BY / PACKAGED_BY / INVESTED_IN / COMPETES_WITH）
+- **CLAIM**：系统认为某个关系成立到什么程度？（VERIFIED / SUPPORTED / INFERRED / DISPUTED / STALE / SUPERSEDED / REJECTED / UNKNOWN）
+- **EVIDENCE**：为什么相信？（annual report / announcement / disclosure / industry media / discussion）
+- **EVENT**：什么变了？（NEW_CUSTOMER / SUPPLIER_CHANGED / CAPACITY_EXPANSION / NEW_PRODUCT / FUNDING / TENDER / REGULATION / PRICE_CHANGE）
+
+---
+
+## Information Integration（多层信息整合）
+
+### 1. Single-Entity Intelligence
+
 ```bash
-python3 scripts/ingest.py <你的vault> -f examples/relations-demo.yaml   # YAML → 节点+关系
-python3 scripts/evidence-audit.py <你的vault>                            # 证据置信度打标
-python3 scripts/import-helper.py demo <你的vault> --merge                # 整库合并
+python3 scripts/ask.py demo "富瀚微的客户是谁" -o board.html
+```
+聚合公司画像 + 供应商 + 客户 + 产品 + 投资人 + 证据 + 关联实体 → 单实体 Intelligence Card。
+
+### 2. Pairwise Intelligence
+
+```bash
+python3 scripts/panorama.py demo 富瀚微 全志科技 -o panorama.html
+```
+比较 A-only / B-only / shared nodes / common ecosystem / potential overlap，理解两个公司的关系结构。
+
+### 3. Cross-Entity Intelligence
+
+```bash
+python3 scripts/cross-entity-scan.py <vault> <new-company> --report
+```
+新公司进入数据库后自动与已有知识比较，发现可能的竞争/供应链交互 → Discovery Report。这是系统从 database 走向 intelligence system 的关键能力。
+
+### 4. Temporal / Event Intelligence
+
+```bash
+python3 scripts/watchlist.py ai-compute --watch NVIDIA,SK海力士,台积电 -o watchlist.html
+```
+变化记录为 Event 而非覆盖旧事实；目标是 **Change Detection，而不是 News Aggregation**。
+
+---
+
+## Evidence Layer
+
+每条重要事实都应该回答：来源？何时采集？证据强度？是否过期？
+
+```bash
+python3 scripts/evidence-audit.py <vault>   # 节点级分级 VERIFIED/SUPPORTED/INFERRED/UNKNOWN
 ```
 
-## 两个库
+长期设计区分两个概念：`source_quality ≠ evidence_strength`（Reuters 是高质量来源，但"据悉可能进入供应链"对"已经成为供应商"的支撑强度仍然很低）。
 
-| 库 | 模型 | 规模 | 看什么 |
-|----|------|------|--------|
-| [demo/](demo/) | v1：公司-公司关系图 | 159 节点 / 718 关系 / 0 断裂 | 半导体全链条（设计/代工/设备/封测）+ 股东全节点化 + 证据打标 |
-| [ai-compute/](ai-compute/) | v2：产品级+事件+产能 | 47 节点 / 8 事件 / 2 产能追踪 | NVIDIA 供应链穿透 + Watchlist 事件流 + claim 内联 |
+---
 
-## 工具链
+## Evaluation
 
-| 工具 | 系统 | 作用 |
-|------|------|------|
-| `scripts/ingest.py` | 关系串联 | YAML → 节点 + 双向 wikilink（幂等） |
-| `scripts/ask.py` | 展示 | 问询 → HTML 看板（证据徽章） |
-| `scripts/panorama.py` | 展示 | 双实体全景图 |
-| `scripts/cross-entity-scan.py` | **入库后扫描**：新实体自动对比全库，发现竞争/共享客户/供应链关联 + Discovery Report | `python3 scripts/cross-entity-scan.py <vault> 寒武纪 --report` |
-| `scripts/watchlist.py` | 事件流 | 变化摘要（Change Detection） |
-| `scripts/evidence-audit.py` | 审计 | 置信度打标 + 审计报告 |
-| `scripts/import-helper.py` | 导入 | 合并进个人 Obsidian 库（冲突自动处理） |
+### Eval v1 — Is what we stored correct?
+Relation Precision / Evidence quality / Entity Resolution / Temporal Validity / Abstention。已完成 50 条关系分层抽样 gold set：**Relation Precision 50/50**，并诚实暴露早期问题（关系级 evidence 覆盖不足、时间信息不完整、弱证据混入），作为 backlog 追踪。
 
-## 文档
+### Eval v2 — Is the system useful?
+| Metric | Question |
+|--------|----------|
+| Relation Recall | 应该知道的关系覆盖了多少？ |
+| Event Recall | 重要事件抓到了多少？（当前 AI Compute 窄域 **8/12 = 67%**） |
+| Detection Latency | 事件发生多久后系统知道？（live 待 cron 运行数据验证） |
+| False Alert Rate | 推送中有多少没有商业意义？（待运行数据） |
+| Evidence Coverage | 多少 claim 能追溯到来源？（当前 98%） |
 
-| 文档 | 内容 |
-|------|------|
-| docs/01 | Obsidian × Hermes 协作方式与环境 |
-| docs/02 | 架构与 Proposal |
-| docs/03 | Obsidian 使用方法 |
-| docs/04 | 搜索方式与信息渠道 |
-| docs/05 | 导入方案 |
-| docs/06 | **Eval v1**：50 条关系 gold set 核对 + 短板追踪 |
-| docs/07 | **Schema V2**：7 对象模型 + 50 字段 + 产品封装 |
+诚实结论：**precision 较高，但 coverage 有限；live latency 与 false-alert 仍待证明。**
 
-## 合规声明
+---
 
-只采集公开信息；遵守网站条款；不采个人隐私；每条关键信息带来源 URL + 采集时间，可审计可导出。
+## Commercial Value
+
+1. **Supply-chain intelligence**：谁供谁、供什么、哪个产品依赖哪个组件、哪个设施是瓶颈
+2. **Competitive intelligence**：新公司加入自动发现 product overlap / shared customers / shared suppliers / shared investors / direct competition（VC/PE、券商研究、战略、BD、采购）
+3. **Continuous monitoring**：用户定义 watchlist，系统持续回答"从上次检查之后，什么真正变了？"
+4. **Evidence-backed research**：每个结论保留 source/timestamp/confidence/evidence state，可 review/audit/correct/update/export
+
+---
+
+## What is implemented vs. what is next
+
+### Implemented / runnable
+- Markdown/Obsidian intelligence graph
+- structured entity + relation ingestion（ingest.py）
+- single-entity intelligence board（ask.py）
+- pairwise panorama（panorama.py）
+- evidence source grading + audit report（evidence-audit.py）
+- event/watchlist rendering（watchlist.py）
+- product/facility/event V2 data objects
+- **cross-entity scan prototype + Discovery Report**
+- Eval v1 + Eval v2 metric framework
+
+### Prototype / early validation
+- cross-entity relationship scoring（heuristic，待校准）
+- event recall measurement（67%，待提升）
+- continuous monitoring orchestration（cron 已注册，live 待证明）
+- temporal state tracking / capacity intelligence
+
+### Next（未实现，不冒充）
+- **Event → Impact Propagation**（event → affected company → first-order → second-order supply-chain impact）
+- **Event Significance**（Novelty × Commercial Impact × Supply Criticality × Evidence Strength × Watchlist Relevance，只推送真正改变判断的变化）
+- **Continuous Evaluation**（Recall / latency / false alerts / coverage 滚动测量）
+- **User Validation**（是否有人持续使用并付费）
+
+---
+
+## Example Intelligence Domains
+
+- `demo/`：Company–Company 关系图（半导体公司/供应商/客户/投资人/股东/竞争者），验证关系图谱 + 证据打标 + 单/双实体查询。159 节点 / 718 关系 / 0 断裂。
+- `ai-compute/`：V2 intelligence model（Company/Product/Facility/Event/Capacity/Evidence/Cross-Entity Discovery），聚焦 AI Compute Supply Chain（AI accelerator / HBM / advanced packaging / foundry / PCB / optical module / server ODM）。47 节点 / 8 事件 / 2 产能追踪。
+
+---
+
+## Repository
+
+```text
+demo/            Company-centric intelligence graph
+ai-compute/      V2 AI Compute intelligence graph
+scripts/         ingest · ask · panorama · cross-entity-scan · watchlist · evidence-audit · import-helper
+docs/            architecture · source methodology · schema · evaluation · user validation · commercial validation
+```
+
+## Documentation
+
+- `docs/02-企业情报数据库-架构与Proposal.md` — architecture
+- `docs/04-search-methods.md` — data sources & retrieval methodology
+- `docs/06-eval-report.md` — Eval v1
+- `docs/07-schema-v2.md` — intelligence schema
+- `docs/08-eval-v2.md` — recall / latency / false-alert evaluation
+- `docs/09-user-validation.md` — user validation
+- `docs/10-commercial-validation.md` — commercial roadmap
+
+---
+
+## Design Principle
+
+> 只保存会改变我们对公司、产品、供应链或事件判断的信息，并让每个判断可以被验证、比较和更新。
+
+```text
+Search finds information.
+A database stores information.
+Enterprise Intelligence connects information, tracks how it changes,
+tests whether it is reliable, and determines why the change matters.
+```
+
+---
+
+## Status
+
+**Current stage: sellable / testable intelligence MVP, not yet a validated commercial intelligence platform.**
+
+已证明：structured intelligence can be built / evidence provenance can be preserved / cross-entity relationships can be discovered / events can be represented and surfaced / system quality can be evaluated
+
+尚待证明：high recall / low detection latency / low false-alert rate / impact propagation quality / repeated real-user usage / willingness to pay

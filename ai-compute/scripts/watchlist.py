@@ -54,6 +54,9 @@ def parse_note(path):
 def scan_events(vault, days=None, watch=None):
     events = []
     cap_nodes = []
+    cutoff = None
+    if days:
+        cutoff = datetime.date.today() - datetime.timedelta(days=days)
     for root, dirs, fnames in os.walk(vault):
         if '.obsidian' in root: continue
         for f in fnames:
@@ -62,6 +65,18 @@ def scan_events(vault, days=None, watch=None):
             fm, body = parse_note(fp)
             t = fm.get('type', '')
             if t == 'event':
+                # days 过滤：event_date（YYYY 或 YYYY-MM）与 cutoff 比较
+                if cutoff:
+                    d = fm.get('event_date', '')
+                    try:
+                        if re.match(r'^\d{4}-\d{2}$', d):
+                            ed = datetime.date(int(d[:4]), int(d[5:7]), 1)
+                            if ed < cutoff: continue
+                        elif re.match(r'^\d{4}$', d):
+                            ed = datetime.date(int(d), 1, 1)
+                            if ed < cutoff: continue
+                    except ValueError:
+                        pass  # 无法解析的日期不过滤
                 events.append((fp, fm, body))
             elif '产能' in f or 'capacity' in f.lower():
                 cap_nodes.append((fp, fm, body))
