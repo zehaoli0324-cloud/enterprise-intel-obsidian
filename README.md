@@ -20,6 +20,7 @@
 | `scripts/ingest.py` | **写入端**：YAML 关系文件 → 批量生成 Obsidian 节点 + 双向 wikilink 关系 | `python3 scripts/ingest.py <vault> -f relations.yaml` |
 | `scripts/ask.py` | **读取端**：问询 → 生成 HTML 看板（关系图 + 关联卡片 + 来源） | `python3 scripts/ask.py <vault> "富瀚微的客户是谁" -o 看板.html` |
 | `scripts/panorama.py` | **全景图**：双实体关系全景（两家公司 + 全部上下游/投资/竞争网络） | `python3 scripts/panorama.py <vault> 富瀚微 全志科技 -o 全景.html` |
+| `scripts/watchlist.py` | **事件流**：Watchlist 变化摘要（事件+产能追踪，Change Detection） | `python3 scripts/watchlist.py <vault> --watch NVIDIA,SK海力士 -o watchlist.html` |
 | `templates/board.html` | 看板皮肤（样式与数据分离，改模板即换肤） | ask.py 自动读取，或用 `-t 自定义.html` |
 | `docs/` | 6 篇文档：协作环境 / 架构 / Obsidian 使用 / 搜索方法论 / 导入方案 / Eval 报告 | 见下方索引 |
 | skill | `enterprise-intel-obsidian`（Hermes 全流程 + 坑） | 装入 Hermes 后自动触发 |
