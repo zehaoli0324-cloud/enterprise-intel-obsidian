@@ -19,4 +19,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[长鑫存储]]（生产）
+- [[长鑫存储]]（生产）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/ShareholderResearch/PageAjax?code=SH603986）

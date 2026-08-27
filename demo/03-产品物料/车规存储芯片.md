@@ -19,4 +19,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[北京君正]]（生产）
+- [[北京君正]]（生产）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SZ300223）

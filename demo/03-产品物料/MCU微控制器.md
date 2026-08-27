@@ -19,4 +19,4 @@ GD32 系列 MCU，国产 32 位 MCU 主力。
 
 ## 关联
 
-- [[兆易创新]]（生产）
+- [[兆易创新]]（生产）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH603986）

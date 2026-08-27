@@ -14,4 +14,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[澜起科技]]（持股 3.69%）
+- [[澜起科技]]（持股 3.69%）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH688008）

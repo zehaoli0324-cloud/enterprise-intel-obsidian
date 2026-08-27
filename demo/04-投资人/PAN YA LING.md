@@ -14,4 +14,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[全志科技]]（持股 0.47%）
+- [[全志科技]]（持股 0.47%）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SZ300458）

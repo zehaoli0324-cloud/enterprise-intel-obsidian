@@ -14,4 +14,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[华虹公司]]（持股 9.24%）
+- [[华虹公司]]（持股 9.24%）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH688347）

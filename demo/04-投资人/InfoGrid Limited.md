@@ -14,4 +14,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[兆易创新]]（持股 1.86%）
+- [[兆易创新]]（持股 1.86%）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH603986）

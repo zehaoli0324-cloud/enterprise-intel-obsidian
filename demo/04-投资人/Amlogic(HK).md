@@ -14,4 +14,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[晶晨股份]]（持股 18.77%）
+- [[晶晨股份]]（持股 18.77%）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH688099）

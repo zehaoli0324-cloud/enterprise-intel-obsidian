@@ -19,4 +19,4 @@ OTT 机顶盒芯片国内市占领先，与全志 H 系列竞争。
 
 ## 关联
 
-- [[晶晨股份]]（生产）
+- [[晶晨股份]]（生产）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH688099）

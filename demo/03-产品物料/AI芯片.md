@@ -19,4 +19,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[寒武纪]]（生产）
+- [[寒武纪]]（生产）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH688256）

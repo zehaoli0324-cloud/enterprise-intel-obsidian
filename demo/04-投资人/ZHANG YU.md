@@ -14,4 +14,4 @@ evidence: VERIFIED
 
 ## 关联
 
-- [[卓胜微]]（持股 2.98%）
+- [[卓胜微]]（持股 2.98%）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SZ300782）

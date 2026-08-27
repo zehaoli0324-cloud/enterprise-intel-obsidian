@@ -19,4 +19,4 @@ NOR Flash 全球主要供应商之一，应用于消费电子/汽车/工业。
 
 ## 关联
 
-- [[兆易创新]]（生产）
+- [[兆易创新]]（生产）（来源: https://emweb.securities.eastmoney.com/PC_HSF10/CoreConception/PageAjax?code=SH603986）
