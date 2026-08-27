@@ -1,7 +1,7 @@
 # 企业情报数据库：架构与 Proposal
 
 > 版本：v1.0 · 2026-08-26
-> 定位：企业上下游供应商、投资人信息调查的「实时更新数据库」，以 Obsidian 方式组织。
+> 定位：企业上下游供应商、投资人信息调查的「持续更新数据库」，以 Obsidian 方式组织。
 > 前置阅读：《01-obsidian-hermes-collaboration.md》（Obsidian × Hermes 协作机制）。
 
 ---

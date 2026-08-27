@@ -56,6 +56,8 @@ def main():
     ap = argparse.ArgumentParser(description='证据等级打标 + 审计报告')
     ap.add_argument('vault', help='Obsidian vault 路径')
     ap.add_argument('--report-only', action='store_true', help='只重写审计报告')
+    ap.add_argument('--audit-dir', default='08-证据审计',
+                    help='审计报告输出目录（v1 库默认 08-证据审计；v2 压测库用 05-证据审计）')
     args = ap.parse_args()
 
     if not os.path.isdir(args.vault):
@@ -93,7 +95,7 @@ def main():
             rows.append((base, etype, level, len(re.findall(r'https?://', content))))
 
     # 审计报告
-    out = os.path.join(args.vault, '08-证据审计/evidence-audit.md')
+    out = os.path.join(args.vault, args.audit_dir, 'evidence-audit.md')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     lines = ['# 证据审计报告（Evidence Audit）', '',
              f'> 生成：{__import__("datetime").date.today().isoformat()} · 按来源类型自动定级 · 待核实事项见各节点正文', '',

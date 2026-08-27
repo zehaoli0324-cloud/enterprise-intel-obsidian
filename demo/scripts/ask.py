@@ -28,12 +28,29 @@ TYPE_LABELS = {
     'company': '公司', 'person': '人物', 'product': '产品',
     'investor': '投资人', 'deal': '交易事件', 'analysis': '分析',
     'changelog': '变更日志', 'index': '索引',
+    'facility': '设施', 'event': '事件', 'capacity': '产能追踪',
 }
 TYPE_COLORS = {
     'company': '#3b82f6', 'person': '#f59e0b', 'product': '#10b981',
     'investor': '#8b5cf6', 'deal': '#ef4444', 'analysis': '#64748b',
     'changelog': '#94a3b8', 'index': '#0ea5e9',
+    'facility': '#0d9488', 'event': '#e11d48', 'capacity': '#7c3aed',
 }
+TYPE_FILL = {
+    'facility': 'rgba(13,148,136,.14)', 'event': 'rgba(225,29,72,.14)', 'capacity': 'rgba(124,58,237,.14)',
+}
+EVIDENCE_STYLE = {
+    'VERIFIED': ('一手官方', '#10b981'),
+    'SUPPORTED': ('权威媒体', '#3b82f6'),
+    'INFERRED': ('自媒体', '#f59e0b'),
+    'UNKNOWN': ('待核实', '#ef4444'),
+    'NA': ('非实体', '#94a3b8'),
+}
+
+
+def evidence_badge_html(level):
+    label, color = EVIDENCE_STYLE.get(level, ('未知', '#94a3b8'))
+    return f'<span class="tag" style="background:{color}">证据:{label}</span>'
 RELATION_KEYWORDS = {
     '投资': '#8b5cf6', '股东': '#8b5cf6', '持股': '#8b5cf6',
     '供货': '#3b82f6', '客户': '#3b82f6', '采购': '#3b82f6', '供应': '#3b82f6',
@@ -89,6 +106,7 @@ TEMPLATE_FALLBACK = """<!DOCTYPE html>
     <h1>{{NAME}}</h1>
     <div class="sub">
       <span class="tag">{{TYPE_LABEL}}</span>
+      {{EVIDENCE}}
       <span class="tag">采集于 {{FETCHED}}</span>
       <span class="tag">{{NEIGHBOR_COUNT}} 个直接关联</span>
     </div>
@@ -144,14 +162,17 @@ def scan_vault(vault):
 
 
 def find_target(notes, query):
+    """实体匹配：完全匹配（文件名/frontmatter name）优先于子串匹配"""
     best, best_score = None, 0
     for base, note in notes.items():
         name = note['fm'].get('name', base)
         score = 0
-        if query in base:
-            score = 3
+        if query == base or query == name:
+            score = 100          # 完全匹配，压倒性优先
+        elif query in base:
+            score = 10           # 文件名子串
         elif query in name:
-            score = 3
+            score = 10           # frontmatter name 子串
         if query in note['body']:
             score += 1
         if score > best_score:
@@ -221,13 +242,15 @@ def render(target_base, note, notes, template_path=None):
     type_label = TYPE_LABELS.get(ntype, ntype)
     color = TYPE_COLORS.get(ntype, '#64748b')
 
-    # 一度关联（出去 + 进来）
+    # 一度关联（出去 + 进来），过滤索引/日志类非实体节点
     neighbors = []
     for t in sorted(links | note['backlinks']):
         if t not in notes or t == target_base:
             continue
         tn = notes[t]
         ttype = tn['fm'].get('type', '')
+        if ttype in ('index', 'changelog'):
+            continue
         tcolor = TYPE_COLORS.get(ttype, '#64748b')
         # 关系描述：本笔记指向它（本笔记正文）+ 它指向本笔记（对方正文）
         desc = extract_context(body, t)
@@ -235,7 +258,7 @@ def render(target_base, note, notes, template_path=None):
             desc = extract_context(tn['body'], target_base)
         d = desc[0] if desc else ttype
         neighbors.append((t, tcolor, d))
-    neighbors = neighbors[:16]
+    # 全部显示；SVG 图只画前 16 个（防图太密）
 
     # 基本信息表
     field_order = ['name', 'code', 'industry', 'region', 'founded', 'status', 'website',
@@ -278,11 +301,12 @@ def render(target_base, note, notes, template_path=None):
         'TITLE': html.escape(f'{name} · 企业情报看板'),
         'NAME': html.escape(name),
         'TYPE_LABEL': type_label,
+        'EVIDENCE': evidence_badge_html(fm.get('evidence', '')),
         'FETCHED': fm.get('fetched_at', '-'),
         'NEIGHBOR_COUNT': str(len(neighbors)),
         'HERO_COLOR': color,
         'FM_ROWS': fm_rows,
-        'SVG': build_svg(name[:8], [(n, c) for n, c, _ in neighbors]),
+        'SVG': build_svg(name[:8], [(n, c) for n, c, _ in neighbors[:16]]),
         'REL_CARDS': rel_html,
         'BODY_SNIP': body_snip,
         'SRC': src_html,
