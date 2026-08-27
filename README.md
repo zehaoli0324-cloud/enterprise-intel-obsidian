@@ -238,8 +238,8 @@ Relation Precision / Evidence quality / Entity Resolution / Temporal Validity / 
 
 ## Example Intelligence Domains
 
-- `demo/`：Company–Company 关系图（半导体公司/供应商/客户/投资人/股东/竞争者），验证关系图谱 + 证据打标 + 单/双实体查询。159 节点 / 718 关系 / 0 断裂。
-- `ai-compute/`：V2 intelligence model（Company/Product/Facility/Event/Capacity/Evidence/Cross-Entity Discovery），聚焦 AI Compute Supply Chain（AI accelerator / HBM / advanced packaging / foundry / PCB / optical module / server ODM）。47 节点 / 8 事件 / 2 产能追踪。
+- `demo/`：Company–Company 关系图（半导体公司/供应商/客户/投资人/股东/竞争者），验证关系图谱 + 证据打标 + 单/双实体查询。159 节点 / 715 关系 / 0 断裂。
+- `ai-compute/`：V2 intelligence model（Company/Product/Facility/Event/Capacity/Evidence/Cross-Entity Discovery），聚焦 AI Compute Supply Chain（AI accelerator / HBM / advanced packaging / foundry / PCB / optical module / server ODM）。47 实体节点 / 8 事件 / 2 产能追踪（另有自动生成的 Discovery Report）。
 
 ---
 
