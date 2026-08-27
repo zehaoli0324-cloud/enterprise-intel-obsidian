@@ -64,6 +64,7 @@ python3 scripts/import-helper.py demo <你的vault> --merge                # 整
 | `scripts/ingest.py` | 关系串联 | YAML → 节点 + 双向 wikilink（幂等） |
 | `scripts/ask.py` | 展示 | 问询 → HTML 看板（证据徽章） |
 | `scripts/panorama.py` | 展示 | 双实体全景图 |
+| `scripts/cross-entity-scan.py` | **入库后扫描**：新实体自动对比全库，发现竞争/共享客户/供应链关联 + Discovery Report | `python3 scripts/cross-entity-scan.py <vault> 寒武纪 --report` |
 | `scripts/watchlist.py` | 事件流 | 变化摘要（Change Detection） |
 | `scripts/evidence-audit.py` | 审计 | 置信度打标 + 审计报告 |
 | `scripts/import-helper.py` | 导入 | 合并进个人 Obsidian 库（冲突自动处理） |

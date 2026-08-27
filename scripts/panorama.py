@@ -119,8 +119,9 @@ def build_svg(c1_name, c2_name, only1, only2, shared, notes, height):
     # 中心
     node(c1_name, cx1, cy, big=True)
     node(c2_name, cx2, cy, big=True)
-    # 中心之间：竞争红色粗线
-    edge(cx1, cy, cx2, cy, '#ef4444', width=3)
+    # 中心之间：不默认画"竞争"红粗线——关系类型由 cross-entity-scan 判定，这里用灰实线
+    # （NVIDIA×SK海力士 等非竞争组合不应被默认标红）
+    edge(cx1, cy, cx2, cy, '#94a3b8', width=2.5)
 
     # 共享列
     n_shared = len(shared)
@@ -212,7 +213,8 @@ def render(vault, c1, c2, out, png_path=None):
     <span class="item"><span class="dot" style="background:#8b5cf6"></span>投资人</span>
     <span class="item"><span class="dot" style="background:#ef4444"></span>事件</span>
     <span class="item"><span class="dot" style="background:#64748b"></span>分析</span>
-    <span class="item"><span class="line-demo" style="border-color:#ef4444"></span>竞争关系（中心之间）</span>
+    <span class="item"><span class="line-demo" style="border-color:#ef4444"></span>竞争关系（cross-entity-scan 判定后可选标注）</span>
+    <span class="item"><span class="line-demo" style="border-color:#94a3b8"></span>中心关联（类型见 cross-entity-scan）</span>
     <span class="item"><span class="line-demo" style="border-color:#3b82f6"></span>{html.escape(c1)} 关联</span>
     <span class="item"><span class="line-demo" style="border-color:#10b981"></span>{html.escape(c2)} 关联</span>
     <span class="item"><span class="line-demo" style="border-color:#94a3b8"></span>共享关联</span>
